@@ -7,10 +7,11 @@
 # sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 execute 'get-key' do
   command 'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10'
+  cwd '/home/daver'
 end
 # echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
 execute 'create_list' do
-  command 'echo deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list'
+  command 'echo deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list'
 end
 
 # sudo apt-get update
