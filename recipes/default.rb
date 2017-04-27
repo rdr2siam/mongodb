@@ -8,24 +8,30 @@
 execute 'get-key' do
   command 'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10'
 end
-# echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+# echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
 execute 'create_list' do
-  command 'echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list'
+  command 'echo deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list'
 end
+
 # sudo apt-get update
-# usually use apt_update, but don't when a file already exists that is the same as the updated file
 execute "apt-get-update" do
   command "apt-get update"
-  ignore_failure true
-  not_if { ::File.exist?('/var/lib/apt/periodic/update-success-stamp') }
 end
 
 # Install
 package "mongodb-org"
+execute 'install monodb' do
+  command 'apt-get install -y mongodb-org'
+end
 
 # Start and enable
 service "mongod" do
   action [:start, :enable]
+end
+
+# Reboot
+service 'mongod' do
+  action [:stop, :restart]
 end
 
 # Download example dataset
